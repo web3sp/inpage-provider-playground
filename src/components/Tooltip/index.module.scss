@@ -1,0 +1,27 @@
+.tooltip {
+    background: #313551;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 12px;
+    letter-spacing: 0.6px;
+    line-height: 16px;
+    padding: 8px 12px;
+    transition: opacity 0.2s ease;
+    z-index: 999;
+    opacity: 0;
+
+    @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+        -webkit-backdrop-filter: blur(64px);
+        backdrop-filter: blur(64px);
+        background: linear-gradient(
+                0deg,
+                rgba(5, 11, 46, 0.52),
+                rgba(5, 11, 46, 0.52)
+            ),
+            rgba(255, 255, 255, 0.92);
+    }
+
+    &.active {
+        opacity: 1;
+    }
+}

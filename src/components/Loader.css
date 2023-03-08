@@ -1,0 +1,40 @@
+/**
+ * ==============================================
+ * Dot Typing
+ * ==============================================
+ */
+.dot-typing {
+  position: relative;
+  left: -9999px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #11a97d;
+  color: #11a97d;
+  box-shadow: 9984px 0 0 0 #11a97d, 9999px 0 0 0 #11a97d, 10014px 0 0 0 #11a97d;
+  animation: dot-typing 1.5s infinite linear;
+}
+
+@keyframes dot-typing {
+  0% {
+    box-shadow: 9984px 0 0 0 #11a97d, 9999px 0 0 0 #11a97d, 10014px 0 0 0 #11a97d;
+  }
+  16.667% {
+    box-shadow: 9984px -10px 0 0 #11a97d, 9999px 0 0 0 #11a97d, 10014px 0 0 0 #11a97d;
+  }
+  33.333% {
+    box-shadow: 9984px 0 0 0 #11a97d, 9999px 0 0 0 #11a97d, 10014px 0 0 0 #11a97d;
+  }
+  50% {
+    box-shadow: 9984px 0 0 0 #11a97d, 9999px -10px 0 0 #11a97d, 10014px 0 0 0 #11a97d;
+  }
+  66.667% {
+    box-shadow: 9984px 0 0 0 #11a97d, 9999px 0 0 0 #11a97d, 10014px 0 0 0 #11a97d;
+  }
+  83.333% {
+    box-shadow: 9984px 0 0 0 #11a97d, 9999px 0 0 0 #11a97d, 10014px -10px 0 0 #11a97d;
+  }
+  100% {
+    box-shadow: 9984px 0 0 0 #11a97d, 9999px 0 0 0 #11a97d, 10014px 0 0 0 #11a97d;
+  }
+}

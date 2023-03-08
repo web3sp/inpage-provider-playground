@@ -1,0 +1,105 @@
+{
+  "ABI version": 2,
+  "data": [
+    {
+      "key": 1,
+      "name": "_nonce",
+      "type": "uint16"
+    }
+  ],
+  "events": [
+    {
+      "inputs": [
+        {
+          "name": "_state",
+          "type": "uint256"
+        }
+      ],
+      "name": "StateChange",
+      "outputs": []
+    }
+  ],
+  "fields": [
+    {
+      "name": "_pubkey",
+      "type": "uint256"
+    },
+    {
+      "name": "_timestamp",
+      "type": "uint64"
+    },
+    {
+      "name": "_constructorFlag",
+      "type": "bool"
+    },
+    {
+      "name": "_nonce",
+      "type": "uint16"
+    },
+    {
+      "name": "state",
+      "type": "uint256"
+    }
+  ],
+  "functions": [
+    {
+      "inputs": [
+        {
+          "name": "_state",
+          "type": "uint256"
+        }
+      ],
+      "name": "constructor",
+      "outputs": []
+    },
+    {
+      "inputs": [
+        {
+          "name": "_state",
+          "type": "uint256"
+        }
+      ],
+      "name": "setState",
+      "outputs": []
+    },
+    {
+      "inputs": [],
+      "name": "getDetails",
+      "outputs": [
+        {
+          "name": "_state",
+          "type": "uint256"
+        }
+      ]
+    },
+    {
+      "inputs": [
+        {
+          "name": "a",
+          "type": "uint256"
+        },
+        {
+          "name": "b",
+          "type": "uint256"
+        },
+        {
+          "name": "c",
+          "type": "uint256"
+        }
+      ],
+      "name": "getMuldivmod",
+      "outputs": [
+        {
+          "name": "result",
+          "type": "uint256"
+        },
+        {
+          "name": "remainder",
+          "type": "uint256"
+        }
+      ]
+    }
+  ],
+  "header": ["pubkey", "time", "expire"],
+  "version": "2.2"
+}

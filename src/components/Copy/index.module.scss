@@ -1,0 +1,32 @@
+.root {
+  --icon: rgba(255, 255, 255, 0.48);
+  --icon-hover: #fff;
+
+  display: flex;
+  grid-gap: 8px;
+
+  &:hover {
+    cursor: pointer;
+
+    .btn {
+      path {
+        stroke: var(--icon-hover);
+      }
+    }
+  }
+}
+
+.btn {
+  // @include btn-clean;
+
+  path {
+    stroke: var(--icon);
+    transition: stroke 0.2s ease;
+  }
+
+  &:hover {
+    path {
+      stroke: var(--icon-hover);
+    }
+  }
+}
