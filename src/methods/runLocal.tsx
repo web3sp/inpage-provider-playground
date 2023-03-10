@@ -47,7 +47,7 @@ export const RunLocal = ({ provider, networkId }: { provider: ProviderRpcClient;
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>runLocal</Panel.Title>
-      <Panel.Description>runLocal method testing</Panel.Description>
+      <Panel.Description>Run methods locally</Panel.Description>
       <Panel.Buttons>
         <Button disabled={!provider} onClick={runLocal}>
           Run

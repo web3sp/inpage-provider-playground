@@ -63,7 +63,7 @@ export const EstimateFees = ({ provider }: { provider: ProviderRpcClient }) => {
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>estimateFees</Panel.Title>
-      <Panel.Description>estimateFees testing</Panel.Description>
+      <Panel.Description>Estimate fees on transaction</Panel.Description>
 
       <Panel.Buttons>
         <Button onClick={estimateFees}>Run</Button>

@@ -104,9 +104,7 @@ export const Cell = ({ provider }: { provider: ProviderRpcClient }) => {
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>packIntoCell, unpackFromCell, getBocHash</Panel.Title>
 
-      <Panel.Description>
-        <p>Use packIntoCell first</p>
-      </Panel.Description>
+      <Panel.Description>Methods for working with BOCs (Bag of Cells) and cell serialization.</Panel.Description>
       <Panel.Buttons>
         <Button onClick={pack}>packIntoCell </Button>
         <Button onClick={unpack} disabled={!packCell}>

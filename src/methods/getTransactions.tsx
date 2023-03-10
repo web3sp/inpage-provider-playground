@@ -47,6 +47,14 @@ export const GetTransactions = ({ provider, address }: { provider: ProviderRpcCl
       </Panel.Buttons>
       <Panel.Description>
         GetTransactions is a method that provides you with all the information about the status of several transactions
+        at a specific address. You can
+        <br />
+        1. specify a specific address to view transactions at
+        <br />
+        2. limit the time interval for receiving transactions
+        <br />
+        3. specify a limit on the number of transactions received
+        <br />
       </Panel.Description>
 
       <Panel.Input>

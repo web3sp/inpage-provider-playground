@@ -97,7 +97,27 @@ export const Subscribe = ({ provider, address }: { provider: ProviderRpcClient; 
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>subscribe, unsubscribe, unsubscribeAll, test transaction call</Panel.Title>
-      <Panel.Description>Subscription testing</Panel.Description>
+      <Panel.Description>
+        <ul className='flex flex-col space-y-2'>
+          <li>
+            <strong>Subscribe</strong>
+            <br /> The subscribe method is used to subscribe to a specific event in the blockchain network.
+          </li>
+          <li>
+            <strong>Unsubscribe</strong>
+            <br />
+            The unsubscribe method is used to unsubscribe from a previously subscribed event.
+          </li>
+          <li>
+            <strong>UnsubscribeAll</strong>
+            <br /> The unsubscribeAll method is used to unsubscribe from all previously subscribed events.
+          </li>
+          <li>
+            <strong>Test Transaction Call</strong>
+            <br /> Use to test a transaction call in a smart contract.
+          </li>
+        </ul>
+      </Panel.Description>
 
       <Panel.Buttons>
         <Button onClick={subscribe} disabled={!!isSubscriptionActive}>

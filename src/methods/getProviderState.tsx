@@ -29,7 +29,7 @@ export const GetProviderState = ({ provider }: { provider: ProviderRpcClient }) 
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>getProviderState</Panel.Title>
       <Panel.Description>
-        getProviderState is a method that gives you to information about provider's state
+        getProviderState is a method that gives you to information about provider's state from extension
       </Panel.Description>
 
       <Panel.Buttons>
