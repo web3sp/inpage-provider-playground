@@ -118,7 +118,16 @@ export const SignData = ({
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>signData, verifySignature</Panel.Title>
-      <Panel.Description>signData testing</Panel.Description>
+      <Panel.Description>
+        <p>
+          The <strong>"signData"</strong> method in transaction context is used to digitally sign a piece of data, which
+          can be a transaction or any other piece of information.{' '}
+        </p>
+        <p className='mt-2'>
+          The <strong>"verifySignature"</strong> method, on the other hand, is used to verify the authenticity of a
+          digital signature.
+        </p>
+      </Panel.Description>
 
       <Panel.Buttons>
         <Button onClick={signData}>signData</Button>

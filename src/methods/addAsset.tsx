@@ -64,6 +64,9 @@ export const AddAsset = ({ provider }: { provider: ProviderRpcClient }) => {
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>addAsset</Panel.Title>
+      <Panel.Description>
+        The addAsset method is used to create a new asset and add it to the account.
+      </Panel.Description>
       <Panel.Buttons>
         <Button disabled={!provider} onClick={addAsset}>
           Run

@@ -12,7 +12,7 @@ const Button = ({ children, icon = true, className, ...props }: ButtonProps) => 
     <button
       type='button'
       className={cn(
-        'inline-flex items-center  rounded border border-transparent bg-green-500 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-lightgreen focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-green-100 disabled:bg-opacity-10 ',
+        'inline-flex items-center  justify-between rounded border border-transparent bg-green-500 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-lightgreen focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-green-100 disabled:bg-opacity-10',
         className,
       )}
       {...props}

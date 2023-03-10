@@ -87,7 +87,8 @@ export const Salt = ({ provider }: { provider: ProviderRpcClient }) => {
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>getCodeSalt, setCodeSalt</Panel.Title>
       <Panel.Description>
-        <p>codeSalt methods</p>
+        <p>Methods that are used to manage the code salt of a smart contract.</p>
+        INDEX you should take from github. It ALWAYS constant!
       </Panel.Description>
 
       <Panel.Buttons>

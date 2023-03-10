@@ -33,7 +33,8 @@ export const GetFullContractState = ({ provider, address }: { provider: Provider
       <Panel.Title>getFullContractState</Panel.Title>
 
       <Panel.Description>
-        getFullContractState is a method that gives you information about contract state
+        GetFullContractState is a method that provides you with information from the blockchain about the state of the
+        contract
       </Panel.Description>
       <Panel.Buttons>
         <Button disabled={!provider} onClick={onButtonClick}>

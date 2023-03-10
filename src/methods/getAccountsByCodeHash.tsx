@@ -46,6 +46,12 @@ export const GetAccountsByCodeHash = ({
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>getAccountsByCodeHash</Panel.Title>
+      <Panel.Description>
+        getAccountsByCodeHash is a method that provides you with all the information about the status of several
+        transactions at a specific address. You can <br />
+        1. specify a Code hash to view transactions at <br />
+        2. specify a limit on the number of transactions received
+      </Panel.Description>
       <Panel.Buttons>
         <Button disabled={!provider} onClick={onButtonClick}>
           Run

@@ -116,32 +116,32 @@ const initVenomConnect = async (checkNetworkId: number = 1000) => {
       //     'android',
       //   ],
       // },
-      oxychatwallet: {
-        walletWaysToConnect: [
-          {
-            // NPM package
-            package: ProviderRpcClient,
-            packageOptions: {
-              fallback: VenomConnect.getPromise('oxychatwallet', 'extension') || (() => Promise.reject()),
-              forceUseFallback: true,
-            },
-            packageOptionsStandalone: {
-              fallback: standaloneFallback,
-              forceUseFallback: true,
-            },
-
-            // Setup
-            id: 'extension',
-            type: 'extension',
-          },
-        ],
-        defaultWalletWaysToConnect: [
-          // List of enabled options
-          'mobile',
-          'ios',
-          'android',
-        ],
-      },
+      // oxychatwallet: {
+      //   walletWaysToConnect: [
+      //     {
+      //       // NPM package
+      //       package: ProviderRpcClient,
+      //       packageOptions: {
+      //         fallback: VenomConnect.getPromise('oxychatwallet', 'extension') || (() => Promise.reject()),
+      //         forceUseFallback: true,
+      //       },
+      //       packageOptionsStandalone: {
+      //         fallback: standaloneFallback,
+      //         forceUseFallback: true,
+      //       },
+      //
+      //       // Setup
+      //       id: 'extension',
+      //       type: 'extension',
+      //     },
+      //   ],
+      //   defaultWalletWaysToConnect: [
+      //     // List of enabled options
+      //     'mobile',
+      //     'ios',
+      //     'android',
+      //   ],
+      // },
     },
   })
 }
@@ -357,16 +357,17 @@ const App = () => {
               <div className='mt-16 text-sm lg:text-base'>
                 <div className='flex w-full items-center'>
                   <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Venom Connect theme</span>
-                  <span className='mr-4'>{theme}</span>
-                  <Button onClick={onToggleThemeButtonClick} icon={false}>
+                  <span className='mr-4 w-14'>{theme}</span>
+                  <Button onClick={onToggleThemeButtonClick} icon={false} className='w-36'>
                     Toggle theme
                   </Button>
                 </div>
 
                 <div className='mt-4 flex w-full items-center'>
                   <span className='mr-4 w-1/4 shrink-0 text-gray-400'>NetworkId</span>
-                  <span className='mr-4'>{currentNetworkId}</span>
+                  <span className='mr-4 w-14'>{currentNetworkId}</span>
                   <Button
+                    className='w-36'
                     onClick={() => {
                       setCurrentNetworkId(currentNetworkId === 1 ? 1000 : 1)
                     }}

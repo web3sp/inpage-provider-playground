@@ -76,6 +76,11 @@ export const SendExternalMessageDelayed = ({
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>sendExternalMessageDelayed</Panel.Title>
+      <Panel.Description>
+        sendExternalMessageDelayed is a method that allows the contract to send a message to an external address after a
+        specified delay. This method can be useful for implementing time-based functions or for scheduling events in the
+        future.
+      </Panel.Description>
       <Panel.Buttons>
         <Button disabled={!provider} onClick={onButtonClick}>
           Run

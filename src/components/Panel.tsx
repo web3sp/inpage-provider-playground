@@ -1,4 +1,5 @@
 import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
+import cn from 'classnames'
 import React, { FC, ReactNode } from 'react'
 import { Loader } from './Loader'
 
@@ -54,26 +55,40 @@ const Panel: PanelType = (props: PanelProps) => {
 
   return (
     <div className='block hover:bg-gray-50 hover:bg-opacity-5'>
-      <div className='flex flex-col justify-between px-4 py-4 sm:px-6 lg:flex-row'>
+      <div className='flex w-full flex-col justify-between px-4 py-4 sm:px-6 lg:flex-row'>
         <div onClick={onClick} className='group mb-2 flex w-full min-w-0 cursor-pointer flex-row'>
-          {chevron ? (
-            open ? (
-              <ChevronDownIcon className='mt-1 mr-1 h-4 w-4 text-gray-500 group-hover:text-lightgreen' />
-            ) : (
-              <ChevronRightIcon className='mt-1 mr-1 h-4 w-4 text-gray-500 group-hover:text-lightgreen' />
-            )
-          ) : null}
-          <div className='group flex flex-col text-xs lg:text-sm'>
-            {title}
-            {description}
+          <div className='flex w-7 shrink-0'>
+            {chevron ? (
+              open ? (
+                <ChevronDownIcon className='mt-1 mr-1 h-4 w-4 text-gray-500 group-hover:text-lightgreen' />
+              ) : (
+                <ChevronRightIcon className='mt-1 mr-1 h-4 w-4 text-gray-500 group-hover:text-lightgreen' />
+              )
+            ) : null}
+          </div>
+          <div className='group flex w-full flex-col text-xs lg:text-sm'>
+            <div className='flex flex-row items-center'>
+              {title}
+              {isLoading && <Loader className='ml-6' />}
+            </div>
+            <div
+              className={cn(
+                'relative mt-1 flex flex-col text-xs font-normal text-gray-400 group-hover:text-gray-200',
+                open ? 'h-fit w-3/4' : 'max-h-24 overflow-hidden ',
+              )}
+            >
+              {/* <div className='absolute bottom-0 h-[20px] w-full bg-gradient-to-t from-[black] to-transparent'></div> */}
+              {description}
+            </div>
           </div>
         </div>
-        {isLoading && <Loader className='mr-5' />}
-        {!open && <div className='ml-0 flex w-fit flex-shrink-0 flex-col space-y-2 lg:ml-5 '>{buttons}</div>}
+        {!open && (
+          <div className='ml-0 flex w-1/4 min-w-fit flex-shrink-0 flex-col space-y-2 pl-7 lg:pl-5 '>{buttons}</div>
+        )}
       </div>
 
       {open && (
-        <div className='w-full py-4'>
+        <div className='w-full py-4 pl-5 lg:pl-7'>
           {input}
           <div className='ml-6 flex w-fit flex-col flex-wrap space-y-2 lg:flex-row lg:space-y-0 lg:space-x-2'>
             {buttons}
@@ -90,7 +105,7 @@ const PanelTitle: FC<PanelTitleProps> = (props) => {
 }
 
 const PanelDescription: FC<PanelDescriptionProps> = (props) => {
-  return <div className='mt-1 text-xs font-normal text-gray-400 group-hover:text-gray-200'>{props.children}</div>
+  return <>{props.children}</>
 }
 
 const PanelButtons: FC<PanelButtonsProps> = (props) => {

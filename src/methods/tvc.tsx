@@ -112,7 +112,19 @@ export const Tvc = ({ provider }: { provider: ProviderRpcClient }) => {
       <Panel.Title>setTvc, mergeTvc, splitTvc, getExpectedAddress</Panel.Title>
 
       <Panel.Description>
-        <p>Tvc methods</p>
+        <h3 className='font-semibold'>setTvc</h3>
+        <p className='mb-2'>
+          This method is used to set the TVC (Ton Virtual Computer) code of a smart contract on the TON Blockchain.
+        </p>
+        <h3 className='font-semibold'>mergeTvc</h3>
+        <p className='mb-2'>This method is used to merge two TVC codes into a single TVC code.</p>
+        <h3 className='font-semibold'>splitTvc</h3>
+        <p className='mb-2'>This method is used to split a TVC code into two separate TVC codes.</p>
+        <h3 className='font-semibold'>getExpectedAddress</h3>
+        <p className='mb-2'>
+          This method is used to calculate the expected address of a smart contract on the TON Blockchain based on the
+          TVC code and the address of the contract owner.{' '}
+        </p>
       </Panel.Description>
       <Panel.Buttons>
         <Button onClick={codeToTvc}>setTvc </Button>

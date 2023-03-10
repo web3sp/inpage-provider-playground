@@ -42,6 +42,7 @@ export const ExtractPublicKey = ({ provider, address }: { provider: ProviderRpcC
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>extractPublicKey</Panel.Title>
+      <Panel.Description>Extracts public key from the contract state BOC.</Panel.Description>
 
       <Panel.Buttons>
         <Button onClick={extractPublicKey}>Run</Button>

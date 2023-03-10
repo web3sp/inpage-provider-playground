@@ -154,6 +154,31 @@ export const EncodeInternalInput = ({
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>encodeInternalInput, decodeInput, decodeEvent</Panel.Title>
+      <Panel.Description>
+        <ul className='flex flex-col space-y-2'>
+          <li>
+            <b>EncodeInternalInput</b>
+            <br /> This method is used in blockchain development to encode the internal input parameters for a
+            transaction. It takes input parameters and encodes them into a format that can be read by the blockchain.
+          </li>
+          <li>
+            <b>decodeInput (internal)</b>
+            <br /> This method is used to decode the internal input parameters of a transaction. It takes an encoded
+            input string and decodes it into human-readable format for developers to review.
+          </li>
+          <li>
+            <b>decodeInput (not internal)</b>
+            <br /> This method is used to decode the input parameters of a transaction that are not internal. This can
+            include input data that is sent from outside of the blockchain network, such as data submitted through a web
+            form.
+          </li>
+          <li>
+            <b>decodedEvent</b>
+            <br /> This method is used to decode events that are emitted by smart contracts on the blockchain. It takes
+            an encoded event string and decodes it into a human-readable format for developers to review.
+          </li>
+        </ul>
+      </Panel.Description>
 
       <Panel.Buttons>
         <Button onClick={encodeInternalInput}>encodeInternalInput </Button>

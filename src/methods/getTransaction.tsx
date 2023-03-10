@@ -43,6 +43,9 @@ export const GetTransaction = ({
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>getTransaction</Panel.Title>
+      <Panel.Description>
+        GetTransaction is a method that gives you all information about Transaction state
+      </Panel.Description>
       <Panel.Buttons>
         <Button disabled={!provider} onClick={onButtonClick}>
           Run

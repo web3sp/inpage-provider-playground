@@ -89,7 +89,17 @@ export const SignDataRaw = ({
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
       <Panel.Title>signDataRaw, verifySignature</Panel.Title>
-      <Panel.Description>signDataRaw testing</Panel.Description>
+      <Panel.Description>
+        <p>
+          <b>"signDataRaw"</b> method is used to sign a piece of data using a private key, producing a signature that
+          can be verified later using the corresponding public key. This method takes the raw data to be signed and the
+          private key as inputs, and returns the resulting signature.
+        </p>
+        <p className='mt-2'>
+          On the other hand, the <b>"verifySignature"</b> method is used to verify the authenticity of a signature
+          produced by the "signDataRaw" method.{' '}
+        </p>
+      </Panel.Description>
 
       <Panel.Buttons>
         <Button onClick={signDataRaw}>signData</Button>
