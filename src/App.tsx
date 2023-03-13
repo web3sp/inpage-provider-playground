@@ -9,6 +9,7 @@ import Footer from './components/Footer'
 
 import Header from './components/Header'
 import { methods } from './methods'
+import { StandaloneCall } from './methods/standaloneCall'
 import { testContract } from './methods/test-venom-contract'
 
 const initTheme = 'light' as const
@@ -319,39 +320,6 @@ const App = () => {
                     </Button>
                   )}
                 </div>
-
-                {/* {currentNetworkId === 1000 && ( */}
-                {/*   <> */}
-                {/*     <h2>or</h2> */}
-                {/*     <div> */}
-                {/*       {venomConnect && ( */}
-                {/*         <Button onClick={onStandaloneCall} icon={false}> */}
-                {/*           Standalone test contract call */}
-                {/*         </Button> */}
-                {/*       )} */}
-                {/*     </div> */}
-                {/*   </> */}
-                {/* )} */}
-                {/* {currentNetworkId === 1000 && ( */}
-                {/*   <div> */}
-                {/*     <p> */}
-                {/*       getMuldivmod({'{'} */}
-                {/*       <br /> */}
-                {/*       a: 4, */}
-                {/*       <br /> */}
-                {/*       b: 5, */}
-                {/*       <br /> */}
-                {/*       c: random 1-3, */}
-                {/*       <br /> */}
-                {/*       {'}'} */}
-                {/*     </p> */}
-                {/*     <pre> */}
-                {/*       {(standaloneMethodsIsFetching ? <i>Standalone request in progress</i> : info) || ( */}
-                {/*         <span>&nbsp;</span> */}
-                {/*       )} */}
-                {/*     </pre> */}
-                {/*   </div> */}
-                {/* )} */}
               </div>
 
               <div className='mt-16 text-sm lg:text-base'>
@@ -420,6 +388,11 @@ const App = () => {
 
                   <div className='my-10 overflow-hidden bg-white bg-opacity-5 shadow sm:rounded-md'>
                     <ul role='list' className='divide-y divide-gray-200 divide-opacity-10'>
+                      {currentNetworkId === 1000 && (!filter || 'standalone call'.includes(filter.toLowerCase())) && (
+                        <li key={'call'} className=''>
+                          <StandaloneCall venomConnect={venomConnect} currentNetworkId={currentNetworkId} />
+                        </li>
+                      )}
                       {methods?.map((element, i) => {
                         const Element = element.method
                         if (!filter || element.name.toLowerCase().includes(filter.toLowerCase())) {
