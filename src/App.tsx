@@ -291,8 +291,8 @@ const App = () => {
   return (
     <div className='bg-image relative flex min-h-screen w-full flex-col bg-black text-white'>
       <Header />
-      <h1 className='mx-auto  text-center text-3xl font-bold lg:text-5xl'>The&nbsp;Cow</h1>
-      <h1 className='mx-auto  mt-2 text-center text-xl text-gray-500 lg:text-2xl'>Inpage Provider Playground</h1>
+      <h1 className='mx-auto  text-center text-3xl font-bold lg:text-5xl'>Inpage Provider Playground</h1>
+      {/* <h1 className='mx-auto  mt-2 text-center text-xl text-gray-500 lg:text-2xl'></h1> */}
       <div className='mx-auto max-w-5xl px-5 lg:px-0'>
         <div>
           {/* {!venomConnect && ( */}

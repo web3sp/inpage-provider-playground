@@ -1,6 +1,6 @@
 {
-  "short_name": "Cow testing",
-  "name": "The Cow - Venom Testing app ",
+  "short_name": "Inpage Provider Playground",
+  "name": "Venom Inpage provider playground",
   "icons": [
     {
       "src": "favicon.ico",
