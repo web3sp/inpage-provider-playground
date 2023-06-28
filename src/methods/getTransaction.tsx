@@ -5,8 +5,9 @@ import Panel from '../components/Panel'
 import { RJson } from '../components/RJson'
 
 const hashObj = {
-  '1000': '9b26bf735e32eacf7836d4495f7f39e76841425bee64ab4b67248dcba7d16d51',
-  '1': '49c3f8b7ccd30dbaf7b3b77d60af3aa593412559e95db6ace317673b65d9dc62',
+   '1000': '9b26bf735e32eacf7836d4495f7f39e76841425bee64ab4b67248dcba7d16d51',
+    '1337': '924409e7fe42d2755bd5eab95593ecbdbd5661aee3e921d54d7208b7b44dea8e',
+   '1': '49c3f8b7ccd30dbaf7b3b77d60af3aa593412559e95db6ace317673b65d9dc62',
 }
 
 export const GetTransaction = ({

@@ -7,7 +7,7 @@ import { RJson } from '../components/RJson'
 const rootContractInVenomTestnetNetwork = new Address(
   '0:9f7ea6114790635e102c9f808c9dc4969a86699b7574ab679087170b12edb768',
 )
-
+const rootContractInVenomNewTestnetNetwork = new Address('0:f8b9af7edf89b4a7b199a2f89b4798dbfbd0e50fa146b5f3fd24fefb6313927e')
 export const AddAsset = ({ provider }: { provider: ProviderRpcClient }) => {
   const [active, setActive] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean | undefined>()
@@ -35,6 +35,10 @@ export const AddAsset = ({ provider }: { provider: ProviderRpcClient }) => {
     switch (providerState.networkId) {
       case 1:
       case 1000:
+      case 1337 :
+        rootContract = rootContractInVenomNewTestnetNetwork;
+        break
+
       default:
         rootContract = rootContractInVenomTestnetNetwork
         break

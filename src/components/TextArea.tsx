@@ -10,7 +10,7 @@ interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 
 const TextArea = ({ className, value, onChange, onClear, ...props }: TextAreaProps) => {
   return (
-    <div className={cn('relative ml-2 mb-2 flex w-full flex-col', className)}>
+    <div className={cn('relative mb-2 ml-2 flex w-full flex-col', className)}>
       <textarea
         value={value}
         autoFocus={true}

@@ -60,9 +60,9 @@ const Panel: PanelType = (props: PanelProps) => {
           <div className='flex w-7 shrink-0'>
             {chevron ? (
               open ? (
-                <ChevronDownIcon className='mt-1 mr-1 h-4 w-4 text-gray-500 group-hover:text-lightgreen' />
+                <ChevronDownIcon className='mr-1 mt-1 h-4 w-4 text-gray-500 group-hover:text-lightgreen' />
               ) : (
-                <ChevronRightIcon className='mt-1 mr-1 h-4 w-4 text-gray-500 group-hover:text-lightgreen' />
+                <ChevronRightIcon className='mr-1 mt-1 h-4 w-4 text-gray-500 group-hover:text-lightgreen' />
               )
             ) : null}
           </div>
@@ -90,7 +90,7 @@ const Panel: PanelType = (props: PanelProps) => {
       {open && (
         <div className='w-full py-4 pl-5 lg:pl-7'>
           {input}
-          <div className='ml-6 flex w-fit flex-col flex-wrap space-y-2 lg:flex-row lg:space-y-0 lg:space-x-2'>
+          <div className='ml-6 flex w-fit flex-col flex-wrap space-y-2 lg:flex-row lg:space-x-2 lg:space-y-0'>
             {buttons}
           </div>
           {output}
