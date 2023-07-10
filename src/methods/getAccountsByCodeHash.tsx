@@ -8,6 +8,7 @@ const limit = 3
 
 const hashObj = {
   '1000': '0202c0af2814fb560455ee6261c554f03d36a94a1b34a17a1fb91ccb82918c7f',
+  '1337': '3ba6528ab2694c118180aa3bd10dd19ff400b909ab4dcf58fc69925b2c7b12a6',
   '1': '84dafa449f98a6987789ba232358072bc0f76dc4524002a5d0918b9a75d2d599',
 }
 
@@ -20,7 +21,7 @@ export const GetAccountsByCodeHash = ({
 }) => {
   const [active, setActive] = useState<boolean>(false)
   // @ts-ignore
-  const hash = (!!networkId && hashObj[networkId]) || hashObj[1000]
+  const hash = (!!networkId && hashObj[networkId]) || hashObj[1337]
   const [isLoading, setIsLoading] = useState<boolean | undefined>()
   const [accounts, setAccounts] = useState<
     Awaited<ReturnType<(typeof provider)['getAccountsByCodeHash']>> | undefined

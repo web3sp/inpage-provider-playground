@@ -3,7 +3,7 @@ FROM node:latest as builder
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
 RUN yarn install --frozen-lockfile
 

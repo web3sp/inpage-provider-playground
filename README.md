@@ -1,17 +1,6 @@
-<p align="center" dir="auto">
-  <a href="https://github.com/venom-blockchain/developer-program">
-    <img src="https://raw.githubusercontent.com/venom-blockchain/developer-program/main/vf-dev-program.png" alt="Logo" width="366.8" height="146.4" style="max-width: 100%;">
-  </a>
-
-</p>
-
-&nbsp;
-
 # Inpage Provider Playground
 
 Example of inpage provider integration
-
-
 
 ## Getting started
 
@@ -36,6 +25,14 @@ Please refer to project's code style for submitting patches and additions.
 6. Submit a Pull request so that we can review your changes.
 
 NOTE: Be sure to merge the latest from "upstream" before making a pull request!
+
+&nbsp;
+
+<p align="center" dir="auto">
+  <a href="https://github.com/venom-blockchain/developer-program">
+    <img src="https://raw.githubusercontent.com/venom-blockchain/developer-program/main/vf-dev-program.png" alt="Logo" width="366.8" height="146.4" style="max-width: 100%;">
+  </a>
+</p>
 
 &nbsp;
 

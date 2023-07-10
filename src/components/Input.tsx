@@ -10,7 +10,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const Input = ({ className, value, onChange, onClear, ...props }: InputProps) => {
   return (
-    <div className={cn('relative ml-2 mb-2 flex w-full flex-col', className)}>
+    <div className={cn('relative mb-2 ml-2 flex w-full flex-col', className)}>
       <input
         value={value}
         autoFocus={true}
@@ -21,7 +21,7 @@ const Input = ({ className, value, onChange, onClear, ...props }: InputProps) =>
         {...props}
       />
       <ArrowPathIcon
-        className='absolute top-2 right-2 h-6 w-6 text-green-300 hover:cursor-pointer hover:text-lightgreen'
+        className='absolute right-2 top-2 h-6 w-6 text-green-300 hover:cursor-pointer hover:text-lightgreen'
         onClick={() => {
           onClear?.()
         }}

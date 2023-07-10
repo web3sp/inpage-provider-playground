@@ -16,53 +16,77 @@ const initTheme = 'light' as const
 
 const getNetworkData = (checkNetworkId: number, field: keyof typeof NETWORKS.venom) => {
   switch (checkNetworkId) {
-    case 1000:
+    case 1337:
       return NETWORKS.venomTestnet[field]
 
-    case 1:
+    case 1000: return NETWORKS.venom[field]
     default:
       return NETWORKS.venom[field]
   }
 }
 
-const standaloneFallback = (checkNetworkId: number = 1000) =>
+const standaloneFallback = (checkNetworkId: number = 1337) =>
   EverscaleStandaloneClient.create({
     connection: getNetworkData(checkNetworkId, 'connection') as ConnectionProperties,
   })
 
-type ToggledNetworks = 1 | 1000 // | 1010;
+type ToggledNetworks = 1000 | 1337 // | 1010;
 
 const NETWORKS = {
   venom: {
-    name: 'Venom Mainnet',
-    checkNetworkId: 1,
-    connection: {
-      id: 1,
-      group: 'venom_mainnet',
-      type: 'jrpc',
-      data: {
-        endpoint: 'https://jrpc.venom.foundation/rpc',
-      },
-    },
+      name: 'Venom Testnet',
+      checkNetworkId: 1000,
+      connection: {
+        id: 1000,
+        group: 'venom_testnet',
+        type: 'jrpc',
+        data: {
+          endpoint: 'https://jrpc-testnet.venom.foundation/rpc',
+        },
+      }
+
+    // name: 'Venom Mainnet',
+    // checkNetworkId: 1,
+    // connection: {
+    //   id: 1,
+    //   group: 'venom_mainnet',
+    //   type: 'jrpc',
+    //   data: {
+    //     endpoint: 'https://jrpc.venom.foundation/rpc',
+    //   },
+    // },
   },
   venomTestnet: {
-    name: 'Venom Testnet',
-    checkNetworkId: 1000,
+    name: 'Venom Testnet 1337',
+    checkNetworkId: 1337,
     connection: {
-      id: 1000,
+      id: 1337,
       group: 'venom_testnet',
       type: 'jrpc',
       data: {
-        endpoint: 'https://jrpc-testnet.venom.foundation/rpc',
+        endpoint: 'https://jrpc-broxustestnet.everwallet.net/rpc',
       },
     },
   },
+  // venomTestnet: {
+  //   name: 'Venom Testnet',
+  //   checkNetworkId: 1000,
+  //   connection: {
+  //     id: 1000,
+  //     group: 'venom_testnet',
+  //     type: 'jrpc',
+  //     data: {
+  //       endpoint: 'https://jrpc-testnet.venom.foundation/rpc',
+  //     },
+  //   }
+  // }
 }
 
-const initVenomConnect = async (checkNetworkId: number = 1000) => {
+const initVenomConnect = async (checkNetworkId: number = 1337) => {
   return new VenomConnect({
     theme: initTheme,
     checkNetworkId: checkNetworkId,
+    checkNetworkName: checkNetworkId === 1337 ? 'Venom Testnet 1337' : "Venom Testnet",
     providersOptions: {
       venomwallet: {
         walletWaysToConnect: [
@@ -117,32 +141,32 @@ const initVenomConnect = async (checkNetworkId: number = 1000) => {
       //     'android',
       //   ],
       // },
-      // oxychatwallet: {
-      //   walletWaysToConnect: [
-      //     {
-      //       // NPM package
-      //       package: ProviderRpcClient,
-      //       packageOptions: {
-      //         fallback: VenomConnect.getPromise('oxychatwallet', 'extension') || (() => Promise.reject()),
-      //         forceUseFallback: true,
-      //       },
-      //       packageOptionsStandalone: {
-      //         fallback: standaloneFallback,
-      //         forceUseFallback: true,
-      //       },
-      //
-      //       // Setup
-      //       id: 'extension',
-      //       type: 'extension',
-      //     },
-      //   ],
-      //   defaultWalletWaysToConnect: [
-      //     // List of enabled options
-      //     'mobile',
-      //     'ios',
-      //     'android',
-      //   ],
-      // },
+      oxychatwallet: {
+        walletWaysToConnect: [
+          {
+            // NPM package
+            package: ProviderRpcClient,
+            packageOptions: {
+              fallback: VenomConnect.getPromise('oxychatwallet', 'extension') || (() => Promise.reject()),
+              forceUseFallback: true,
+            },
+            packageOptionsStandalone: {
+              fallback: standaloneFallback,
+              forceUseFallback: true,
+            },
+
+            // Setup
+            id: 'extension',
+            type: 'extension',
+          },
+        ],
+        defaultWalletWaysToConnect: [
+          // List of enabled options
+          'mobile',
+          'ios',
+          'android',
+        ],
+      },
     },
   })
 }
@@ -161,7 +185,7 @@ const App = () => {
   const [filter, setFilter] = useState<string>('')
 
   const [currentNetworkId, setCurrentNetworkId] = useState<ToggledNetworks>(
-    1000,
+      1337,
     // Number.parseInt(window.location.pathname.split('/')[1]) || 1,
   )
 
@@ -337,7 +361,7 @@ const App = () => {
                   <Button
                     className='w-36'
                     onClick={() => {
-                      setCurrentNetworkId(currentNetworkId === 1 ? 1000 : 1)
+                      setCurrentNetworkId(currentNetworkId === 1000 ? 1337 : 1000)
                     }}
                     icon={false}
                   >
@@ -368,7 +392,7 @@ const App = () => {
                   <div className='group relative mt-1 rounded-md shadow-sm'>
                     <input
                       type='text'
-                      className='m-0 block h-10 w-full cursor-text overflow-visible overflow-ellipsis rounded-lg border border-solid border-gray-700 bg-transparent py-0 pr-10 pl-3 text-sm font-normal leading-5 tracking-wide text-white hover:shadow-[0_0_5px_1px_#9297e2] focus:shadow-[0_0_5px_1px_#9297e2] focus:outline-none'
+                      className='m-0 block h-10 w-full cursor-text overflow-visible overflow-ellipsis rounded-lg border border-solid border-gray-700 bg-transparent py-0 pl-3 pr-10 text-sm font-normal leading-5 tracking-wide text-white hover:shadow-[0_0_5px_1px_#9297e2] focus:shadow-[0_0_5px_1px_#9297e2] focus:outline-none'
                       // box-shadow: 0 0 5px 1px var(--input-border-ring);
                       placeholder='Filter methods by name'
                       value={filter}
@@ -388,7 +412,7 @@ const App = () => {
 
                   <div className='my-10 overflow-hidden bg-white bg-opacity-5 shadow sm:rounded-md'>
                     <ul role='list' className='divide-y divide-gray-200 divide-opacity-10'>
-                      {currentNetworkId === 1000 && (!filter || 'standalone call'.includes(filter.toLowerCase())) && (
+                      {currentNetworkId === 1337 && (!filter || 'standalone call'.includes(filter.toLowerCase())) && (
                         <li key={'call'} className=''>
                           <StandaloneCall venomConnect={venomConnect} currentNetworkId={currentNetworkId} />
                         </li>
