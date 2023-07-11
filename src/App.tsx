@@ -8,55 +8,48 @@ import Button from './components/Button'
 import Footer from './components/Footer'
 
 import Header from './components/Header'
+import Select from './components/Select'
 import { methods } from './methods'
 import { StandaloneCall } from './methods/standaloneCall'
 import { testContract } from './methods/test-venom-contract'
 
 const initTheme = 'light' as const
 
-const getNetworkData = (checkNetworkId: number, field: keyof typeof NETWORKS.venom) => {
-  switch (checkNetworkId) {
-    case 1337:
-      return NETWORKS.venomTestnet[field]
-
-    case 1000: return NETWORKS.venom[field]
-    default:
-      return NETWORKS.venom[field]
-  }
+const getNetworkData = (checkNetworkId: number) => {
+  return NETWORKS.find((network) => network.checkNetworkId === checkNetworkId)
 }
 
 const standaloneFallback = (checkNetworkId: number = 1337) =>
   EverscaleStandaloneClient.create({
-    connection: getNetworkData(checkNetworkId, 'connection') as ConnectionProperties,
+    connection: getNetworkData(checkNetworkId)?.connection as ConnectionProperties,
   })
 
-type ToggledNetworks = 1000 | 1337 // | 1010;
-
-const NETWORKS = {
-  venom: {
-      name: 'Venom Testnet',
-      checkNetworkId: 1000,
-      connection: {
-        id: 1000,
-        group: 'venom_testnet',
-        type: 'jrpc',
-        data: {
-          endpoint: 'https://jrpc-testnet.venom.foundation/rpc',
-        },
-      }
-
-    // name: 'Venom Mainnet',
-    // checkNetworkId: 1,
-    // connection: {
-    //   id: 1,
-    //   group: 'venom_mainnet',
-    //   type: 'jrpc',
-    //   data: {
-    //     endpoint: 'https://jrpc.venom.foundation/rpc',
-    //   },
-    // },
+const NETWORKS = [
+  // {
+  //   name: 'Venom Mainnet',
+  //   checkNetworkId: 1,
+  //   connection: {
+  //     id: 1,
+  //     group: 'venom_mainnet',
+  //     type: 'jrpc',
+  //     data: {
+  //       endpoint: 'https://jrpc.venom.foundation/rpc',
+  //     },
+  //   },
+  // },
+  {
+    name: 'Venom Testnet',
+    checkNetworkId: 1000,
+    connection: {
+      id: 1000,
+      group: 'venom_testnet',
+      type: 'jrpc',
+      data: {
+        endpoint: 'https://jrpc-testnet.venom.foundation/rpc',
+      },
+    },
   },
-  venomTestnet: {
+  {
     name: 'Venom Testnet 1337',
     checkNetworkId: 1337,
     connection: {
@@ -68,25 +61,25 @@ const NETWORKS = {
       },
     },
   },
-  // venomTestnet: {
-  //   name: 'Venom Testnet',
-  //   checkNetworkId: 1000,
-  //   connection: {
-  //     id: 1000,
-  //     group: 'venom_testnet',
-  //     type: 'jrpc',
-  //     data: {
-  //       endpoint: 'https://jrpc-testnet.venom.foundation/rpc',
-  //     },
-  //   }
-  // }
+]
+
+function getNetworkName(networkId: number) {
+  for (const networkKey in NETWORKS) {
+    if (NETWORKS.hasOwnProperty(networkKey)) {
+      const network = NETWORKS[networkKey]
+      if (network.checkNetworkId === networkId) {
+        return network.name
+      }
+    }
+  }
+  return 'Unknown Network'
 }
 
 const initVenomConnect = async (checkNetworkId: number = 1337) => {
   return new VenomConnect({
     theme: initTheme,
     checkNetworkId: checkNetworkId,
-    checkNetworkName: checkNetworkId === 1337 ? 'Venom Testnet 1337' : "Venom Testnet",
+    checkNetworkName: getNetworkName(checkNetworkId),
     providersOptions: {
       venomwallet: {
         walletWaysToConnect: [
@@ -184,10 +177,15 @@ const App = () => {
   const [standaloneMethodsIsFetching, setStandaloneMethodsIsFetching] = useState(false)
   const [filter, setFilter] = useState<string>('')
 
-  const [currentNetworkId, setCurrentNetworkId] = useState<ToggledNetworks>(
-      1337,
+  const [currentNetworkId, setCurrentNetworkId] = useState<number>(
+    localStorage.getItem('selectedNetwork')
+      ? Number(localStorage.getItem('selectedNetwork'))
+      : NETWORKS[0].connection.id,
     // Number.parseInt(window.location.pathname.split('/')[1]) || 1,
   )
+  useEffect(() => {
+    if (currentNetworkId) localStorage.setItem('selectedNetwork', currentNetworkId.toString())
+  }, [currentNetworkId])
 
   const getTheme = () => venomConnect?.getInfo()?.themeConfig?.name?.toString?.() || '...'
 
@@ -240,7 +238,7 @@ const App = () => {
   }
 
   const onInitButtonClick = async () => {
-    const initedVenomConnect = await initVenomConnect(currentNetworkId)
+    const initedVenomConnect = await initVenomConnect(currentNetworkId as number)
     setVenomConnect(initedVenomConnect)
 
     await checkAuth(initedVenomConnect)
@@ -355,23 +353,31 @@ const App = () => {
                   </Button>
                 </div>
 
-                <div className='mt-4 flex w-full items-center'>
+                <div className='mb-2 mt-4 flex w-full items-center'>
                   <span className='mr-4 w-1/4 shrink-0 text-gray-400'>NetworkId</span>
-                  <span className='mr-4 w-14'>{currentNetworkId}</span>
-                  <Button
-                    className='w-36'
-                    onClick={() => {
-                      setCurrentNetworkId(currentNetworkId === 1000 ? 1337 : 1000)
+                  {/* <span className='mr-4 w-14'>{currentNetworkId}</span> */}
+                  {/* <Button */}
+                  {/*   className='w-36' */}
+                  {/*   onClick={() => { */}
+                  {/*     setCurrentNetworkId(currentNetworkId === 1000 ? 1337 : 1000) */}
+                  {/*   }} */}
+                  {/*   icon={false} */}
+                  {/* > */}
+                  {/*   Toggle Network */}
+                  {/* </Button> */}
+                  <Select
+                    className='w-96'
+                    onChange={(e: any) => {
+                      setCurrentNetworkId(e)
                     }}
-                    icon={false}
-                  >
-                    Toggle Network
-                  </Button>
+                    networks={NETWORKS}
+                    currentNetworkId={currentNetworkId}
+                  />
                 </div>
-                <div className='flex w-full items-center'>
-                  <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Network</span>
-                  {getNetworkData(currentNetworkId, 'name') as string}
-                </div>
+                {/* <div className='flex w-full items-center'> */}
+                {/*   <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Network</span> */}
+                {/*   {getNetworkData(currentNetworkId)?.name as string} */}
+                {/* </div> */}
                 <div className='flex w-full items-center break-all'>
                   <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Address</span>
                   {address}
