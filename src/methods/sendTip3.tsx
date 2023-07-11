@@ -114,16 +114,17 @@ export const SendTip3 = ({ provider, address }: { provider: ProviderRpcClient; a
         })
         console.log(`senderTokenWalletAddress::`, senderTokenWalletAddress)
 
-        const recipientTokenWalletAddress = await getWalletOf({
-          tokenRootAddress: rootAddress!,
-          myAddress: recipientAddress,
-          provider,
-        })
-        console.log(`recipientTokenWalletAddress::`, recipientTokenWalletAddress)
+        // const recipientTokenWalletAddress = await getWalletOf({
+        //   tokenRootAddress: rootAddress!,
+        //   myAddress: recipientAddress,
+        //   provider,
+        // })
+        // console.log(`recipientTokenWalletAddress::`, recipientTokenWalletAddress)
 
         const functionParams = {
           amount: String(Math.round(amount)),
-          recipientTokenWallet: recipientTokenWalletAddress,
+          recipient: recipientAddress,
+          deployWalletValue: String(Math.round(10000000)),
           remainingGasTo: senderAddress,
           notify: false,
           payload: '',
@@ -133,7 +134,7 @@ export const SendTip3 = ({ provider, address }: { provider: ProviderRpcClient; a
 
         const tr = await contract.methods
           // @ts-ignore
-          .transferToWallet(functionParams)
+          .transfer(functionParams)
           .send({
             from: senderAddress,
             amount: '1000000000'
