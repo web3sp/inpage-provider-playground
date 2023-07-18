@@ -19,7 +19,7 @@ const getNetworkData = (checkNetworkId: number) => {
   return NETWORKS.find((network) => network.checkNetworkId === checkNetworkId)
 }
 
-const standaloneFallback = (checkNetworkId: number = 1337) =>
+const standaloneFallback = (checkNetworkId: number = 1000) =>
   EverscaleStandaloneClient.create({
     connection: getNetworkData(checkNetworkId)?.connection as ConnectionProperties,
   })
@@ -75,7 +75,7 @@ function getNetworkName(networkId: number) {
   return 'Unknown Network'
 }
 
-const initVenomConnect = async (checkNetworkId: number = 1337) => {
+const initVenomConnect = async (checkNetworkId: number = 1000) => {
   return new VenomConnect({
     theme: initTheme,
     checkNetworkId: checkNetworkId,
@@ -353,8 +353,8 @@ const App = () => {
                   </Button>
                 </div>
 
-                <div className='mb-2 mt-4 flex w-full items-center'>
-                  <span className='mr-4 w-1/4 shrink-0 text-gray-400'>NetworkId</span>
+                <div className='mb-2 mt-4 flex flex-col sm:flex-row w-full items-center'>
+                  <span className='mr-0 sm:mr-4 w-full sm:w-1/4 sm:shrink-0 text-gray-400'>NetworkId</span>
                   {/* <span className='mr-4 w-14'>{currentNetworkId}</span> */}
                   {/* <Button */}
                   {/*   className='w-36' */}
@@ -366,7 +366,7 @@ const App = () => {
                   {/*   Toggle Network */}
                   {/* </Button> */}
                   <Select
-                    className='w-96'
+                    className='w-full sm:w-96'
                     onChange={(e: any) => {
                       setCurrentNetworkId(e)
                     }}
@@ -418,7 +418,7 @@ const App = () => {
 
                   <div className='my-10 overflow-hidden bg-white bg-opacity-5 shadow sm:rounded-md'>
                     <ul role='list' className='divide-y divide-gray-200 divide-opacity-10'>
-                      {currentNetworkId === 1337 && (!filter || 'standalone call'.includes(filter.toLowerCase())) && (
+                      {currentNetworkId && (!filter || 'standalone call'.includes(filter.toLowerCase())) && (
                         <li key={'call'} className=''>
                           <StandaloneCall venomConnect={venomConnect} currentNetworkId={currentNetworkId} />
                         </li>

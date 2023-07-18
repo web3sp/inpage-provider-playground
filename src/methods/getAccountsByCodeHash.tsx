@@ -21,7 +21,7 @@ export const GetAccountsByCodeHash = ({
 }) => {
   const [active, setActive] = useState<boolean>(false)
   // @ts-ignore
-  const hash = (!!networkId && hashObj[networkId]) || hashObj[1337]
+  const hash = (!!networkId && hashObj[networkId]) || hashObj[1000]
   const [isLoading, setIsLoading] = useState<boolean | undefined>()
   const [accounts, setAccounts] = useState<
     Awaited<ReturnType<(typeof provider)['getAccountsByCodeHash']>> | undefined
