@@ -23,6 +23,7 @@ export const SignDataRaw = ({
   // const [publicKey, setPublicKey] = useState<string | undefined>()
   const [signed, setSigned] = useState<any | undefined>()
   const [data, setData] = useState<string>(defaultData)
+  const [signatureId, setSignatureId] = useState<boolean | number | undefined>(true)
 
   const [isValid, setIsValid] = useState<boolean | undefined>()
 
@@ -45,6 +46,7 @@ export const SignDataRaw = ({
         const signed = await provider.signDataRaw({
           publicKey: _publicKey,
           data: Base64.encode(data),
+          withSignatureId: signatureId
         })
 
         setSigned(signed)
@@ -71,6 +73,7 @@ export const SignDataRaw = ({
       publicKey: publicKey,
       signature: signed.signature,
       dataHash: Base64.encode(data),
+      withSignatureId: signatureId
     }
 
     try {
@@ -85,6 +88,29 @@ export const SignDataRaw = ({
 
     // setIsLoading(false)
   }
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+
+    // Check the type of the input value
+    let newValue: any
+
+    if (inputValue === 'true' || inputValue === 'false') {
+      // If the input value is 'true' or 'false', convert it to a Boolean
+      newValue = inputValue === 'true';
+    } else if (/^\d+$/.test(inputValue)) {
+      // If the input value is a number (consists of digits), convert it to a Number
+      newValue = Number(inputValue);
+    } else {
+      // Otherwise, set the value to undefined
+      newValue = undefined;
+    }
+
+    // Call the onChange callback with the new value
+    setSignatureId(newValue)
+    setIsValid(undefined)
+    setIsLoading(false)
+  };
 
   return (
     <Panel open={active} onClick={() => setActive(!active)} isLoading={isLoading}>
@@ -138,6 +164,21 @@ export const SignDataRaw = ({
             }}
           />
         </div>
+
+        <div className='flex w-full flex-col lg:flex-row'>
+          <span className='w-full shrink-0 text-gray-400 lg:w-1/5'>withSignatureId </span>
+          <div className='mb-2 ml-2 flex w-full flex-col'>
+            <input
+              value={signatureId?.toString()}
+              autoFocus={true}
+              onChange={(e) => { handleInputChange(e) }}
+              className='mb-2 w-full rounded bg-white bg-opacity-10 p-2 text-white'
+            />
+            <div className='text-xs text-gray-400'>Input number, true or false</div>
+            <div className='text-xs text-gray-400'>withSignatureId now is: {String(signatureId)}</div>
+          </div>
+        </div>
+
         <div className='flex w-full flex-col lg:flex-row'>
           <span className='w-full text-gray-400 lg:w-1/5 lg:shrink-0'>Base64 data (before Encrypt):</span>
           <span className='ml-2 break-all text-white'>{Base64.encode(data)}</span>

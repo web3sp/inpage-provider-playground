@@ -10,5 +10,5 @@ export const testContract = {
   testContractAbi,
   getTestContractAddress: (networkId: number | string) =>
     // @ts-ignore
-    testContractAddress[networkId] || testContractAddress['1337'],
+    testContractAddress[networkId] || testContractAddress['1000'],
 }
