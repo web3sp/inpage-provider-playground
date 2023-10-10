@@ -59,7 +59,7 @@ export const RunLocal = ({ provider, networkId }: { provider: ProviderRpcClient;
           <span className='w-full shrink-0 text-gray-400 lg:w-1/5'>Test contract address</span>
           <Input
             value={data}
-            autoFocus={true}
+            autoFocus={false}
             onChange={(e) => {
               setData(e.target.value)
               setOutput(undefined)

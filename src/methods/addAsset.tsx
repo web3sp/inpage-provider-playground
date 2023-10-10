@@ -88,7 +88,7 @@ export const AddAsset = ({ provider, networkId }: { provider: ProviderRpcClient;
           <div className='mb-2 ml-2 flex w-full flex-col'>
             <input
               value={rootContractAddress?.toString()}
-              autoFocus={true}
+              autoFocus={false}
               onChange={(e) => {
                 setRootContractAddress(new Address(e.target.value))
                 setIsLoading(false)

@@ -102,7 +102,7 @@ export const Salt = ({ provider }: { provider: ProviderRpcClient }) => {
           <span className='w-full text-gray-400 lg:w-1/5 lg:shrink-0'>INDEX BASE64</span>
           <TextArea
             value={data}
-            autoFocus={true}
+            autoFocus={false}
             onChange={(e) => {
               setData(e.target.value)
               setSaltedCode(undefined)

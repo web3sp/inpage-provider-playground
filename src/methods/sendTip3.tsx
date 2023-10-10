@@ -179,7 +179,7 @@ export const SendTip3 = ({ provider, address }: { provider: ProviderRpcClient; a
           <div className='mb-2 ml-2 flex w-full flex-col'>
             <input
               value={rootAddress}
-              autoFocus={true}
+              autoFocus={false}
               onChange={(e) => {
                 setRootAddress(e.target.value)
                 setTransaction(undefined)

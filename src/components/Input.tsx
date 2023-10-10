@@ -13,7 +13,7 @@ const Input = ({ className, value, onChange, onClear, ...props }: InputProps) =>
     <div className={cn('relative mb-2 ml-2 flex w-full flex-col', className)}>
       <input
         value={value}
-        autoFocus={true}
+        autoFocus={false}
         onChange={(e) => {
           onChange?.(e)
         }}

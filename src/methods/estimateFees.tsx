@@ -78,7 +78,7 @@ export const EstimateFees = ({ provider }: { provider: ProviderRpcClient }) => {
             onWheel={(e) => e.preventDefault()}
             value={data}
             onInvalid={() => {}}
-            autoFocus={true}
+            autoFocus={false}
             onChange={(e) => {
               setData(e.target.value ? Number(e.target.value) : 0)
               setFees(undefined)
