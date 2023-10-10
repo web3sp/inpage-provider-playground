@@ -149,7 +149,7 @@ export const SignDataRaw = ({
           <span className='w-full text-gray-400 lg:w-1/5 lg:shrink-0'>Data for encryption:</span>
           <TextArea
             value={data}
-            autoFocus={true}
+            autoFocus={false}
             onChange={(e) => {
               setData(e.target.value)
               setSigned(undefined)
@@ -170,7 +170,7 @@ export const SignDataRaw = ({
           <div className='mb-2 ml-2 flex w-full flex-col'>
             <input
               value={signatureId?.toString()}
-              autoFocus={true}
+              autoFocus={false}
               onChange={(e) => { handleInputChange(e) }}
               className='mb-2 w-full rounded bg-white bg-opacity-10 p-2 text-white'
             />

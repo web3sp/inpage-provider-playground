@@ -91,7 +91,7 @@ export const EncryptData = ({
           <span className='w-full text-gray-400 lg:w-1/5 lg:shrink-0'>Data for encryption:</span>
           <TextArea
             value={data}
-            autoFocus={true}
+            autoFocus={false}
             onChange={(e) => {
               setData(e.target.value)
               setDecryptData(undefined)
