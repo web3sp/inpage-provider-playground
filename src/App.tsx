@@ -25,18 +25,18 @@ const standaloneFallback = (checkNetworkId: number = 1000) =>
   })
 
 const NETWORKS = [
-  // {
-  //   name: 'Venom Mainnet',
-  //   checkNetworkId: 1,
-  //   connection: {
-  //     id: 1,
-  //     group: 'venom_mainnet',
-  //     type: 'jrpc',
-  //     data: {
-  //       endpoint: 'https://jrpc.venom.foundation/rpc',
-  //     },
-  //   },
-  // },
+  {
+    name: 'Venom Mainnet',
+    checkNetworkId: 1,
+    connection: {
+      id: 1,
+      group: 'venom_mainnet',
+      type: 'jrpc',
+      data: {
+        endpoint: 'https://jrpc.venom.foundation/rpc',
+      },
+    },
+  },
   {
     name: 'Venom Testnet',
     checkNetworkId: 1000,
