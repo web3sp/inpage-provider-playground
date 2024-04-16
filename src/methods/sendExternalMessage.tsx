@@ -1,6 +1,6 @@
 import ExclamationCircleIcon from '@heroicons/react/24/outline/ExclamationCircleIcon'
 import { ProviderRpcClient } from 'everscale-inpage-provider'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import Panel from '../components/Panel'
@@ -24,6 +24,10 @@ export const SendExternalMessage = ({
   const [decodedTransaction, setDecodedTransaction] = useState<any | undefined>()
   const [decodedTransactionEvents, setDecodedTransactionEvents] = useState<any | undefined>()
   const [data, setData] = useState<string>(testContract.getTestContractAddress(networkId!))
+
+  useEffect(() => {
+    setData(testContract.getTestContractAddress(networkId!))
+  }, [networkId])
 
   const onButtonClick = async () => {
     setActive(true)
