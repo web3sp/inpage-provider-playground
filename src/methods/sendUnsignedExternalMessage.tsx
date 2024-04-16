@@ -1,6 +1,8 @@
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { ProviderRpcClient } from 'everscale-inpage-provider'
 import { useState } from 'react'
 import Button from '../components/Button'
+import Input from '../components/Input'
 import Panel from '../components/Panel'
 import { RJson } from '../components/RJson'
 
@@ -21,6 +23,7 @@ export const SendUnsignedExternalMessage = ({
   const [transaction, setTransaction] = useState<any | undefined>()
   const [decodedTransaction, setDecodedTransaction] = useState<any | undefined>()
   const [decodedTransactionEvents, setDecodedTransactionEvents] = useState<any | undefined>()
+  const [data, setData] = useState<string>(testContract.getTestContractAddress(networkId!))
 
   const onButtonClick = async () => {
     setActive(true)
@@ -38,7 +41,8 @@ export const SendUnsignedExternalMessage = ({
 
     if (_publicKey) {
       const { transaction: tr, output } = await provider.rawApi.sendUnsignedExternalMessage({
-        recipient: testContract.getTestContractAddress(networkId!),
+        // recipient: testContract.getTestContractAddress(networkId!),
+        recipient: data,
         payload: {
           abi: JSON.stringify(testContract.testContractAbi),
           method: 'setState',
@@ -84,10 +88,37 @@ export const SendUnsignedExternalMessage = ({
           Run
         </Button>
       </Panel.Buttons>
+
       <Panel.Input>
-        <div className='mt-2 text-gray-400'>Address</div>
-        <div className='rounded-lg bg-white bg-opacity-5 p-6'>
-          <div className='break-all font-mono '> {address}</div>
+        <div className='flex w-full flex-col lg:flex-row'>
+          <span className='w-full shrink-0 text-gray-400 lg:w-1/5'>Test contract address</span>
+          <Input
+            value={data}
+            autoFocus={false}
+            onChange={(e) => {
+              setData(e.target.value)
+              setTransaction(undefined)
+              setDecodedTransaction(undefined)
+              setDecodedTransactionEvents(undefined)
+              setIsLoading(false)
+            }}
+            onClear={() => {
+              setData(testContract.getTestContractAddress(networkId!))
+              setTransaction(undefined)
+              setDecodedTransaction(undefined)
+              setDecodedTransactionEvents(undefined)
+              setIsLoading(false)
+            }}
+          />
+        </div>
+        {/* <div className='flex w-full flex-col lg:flex-row'> */}
+        {/*   <span className='w-full text-gray-400 lg:w-1/5'>Address</span> */}
+        {/*   <span className='ml-2 break-all text-white'>{address}</span> */}
+        {/* </div> */}
+        <div className='mt-4 flex text-gray-400'>
+          <ExclamationCircleIcon className='mr-2 h-6 w-6 text-yellow-500' />{' '}
+          <span className='mr-2 text-yellow-500'>Warning!</span>In case of not working method please check contract
+          first and refill it's balance when needed.
         </div>
       </Panel.Input>
 

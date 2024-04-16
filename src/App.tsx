@@ -25,18 +25,18 @@ const standaloneFallback = (checkNetworkId: number = 1000) =>
   })
 
 const NETWORKS = [
-  // {
-  //   name: 'Venom Mainnet',
-  //   checkNetworkId: 1,
-  //   connection: {
-  //     id: 1,
-  //     group: 'venom_mainnet',
-  //     type: 'jrpc',
-  //     data: {
-  //       endpoint: 'https://jrpc.venom.foundation/rpc',
-  //     },
-  //   },
-  // },
+  {
+    name: 'Venom Mainnet',
+    checkNetworkId: 1,
+    connection: {
+      id: 1,
+      group: 'venom_mainnet',
+      type: 'jrpc',
+      data: {
+        endpoint: 'https://jrpc.venom.foundation/rpc',
+      },
+    },
+  },
   {
     name: 'Venom Testnet',
     checkNetworkId: 1000,
@@ -107,33 +107,59 @@ const initVenomConnect = async (checkNetworkId: number = 1000) => {
           'android',
         ],
       },
-      // everwallet: {
-      //   links: {
-      //     qr: null,
-      //   },
-      //   walletWaysToConnect: [
-      //     {
-      //       // NPM package
-      //       package: ProviderRpcClient,
-      //       packageOptions: {
-      //         fallback: VenomConnect.getPromise('everwallet', 'extension') || (() => Promise.reject()),
-      //         forceUseFallback: true,
-      //       },
-      //       packageOptionsStandalone: {
-      //         fallback: standaloneFallback,
-      //         forceUseFallback: true,
-      //       },
-      //       id: 'extension',
-      //       type: 'extension',
-      //     },
-      //   ],
-      //   defaultWalletWaysToConnect: [
-      //     // List of enabled options
-      //     'mobile',
-      //     'ios',
-      //     'android',
-      //   ],
-      // },
+      everwallet: {
+        links: {
+          qr: null,
+        },
+        walletWaysToConnect: [
+          {
+            // NPM package
+            package: ProviderRpcClient,
+            packageOptions: {
+              fallback: VenomConnect.getPromise('everwallet', 'extension') || (() => Promise.reject()),
+              forceUseFallback: true,
+            },
+            packageOptionsStandalone: {
+              fallback: standaloneFallback,
+              forceUseFallback: true,
+            },
+            id: 'extension',
+            type: 'extension',
+          },
+        ],
+        defaultWalletWaysToConnect: [
+          // List of enabled options
+          'mobile',
+          'ios',
+          'android',
+        ],
+      },
+      oneartwallet: {
+        walletWaysToConnect: [
+          {
+            // NPM package
+            package: ProviderRpcClient,
+            packageOptions: {
+              fallback: VenomConnect.getPromise('oneartwallet', 'extension') || (() => Promise.reject()),
+              forceUseFallback: true,
+            },
+            packageOptionsStandalone: {
+              fallback: standaloneFallback,
+              forceUseFallback: true,
+            },
+
+            // Setup
+            id: 'extension',
+            type: 'extension',
+          },
+        ],
+        defaultWalletWaysToConnect: [
+          // List of enabled options
+          // 'mobile',
+          'ios',
+          'android',
+        ],
+      },
       oxychatwallet: {
         walletWaysToConnect: [
           {
@@ -353,8 +379,8 @@ const App = () => {
                   </Button>
                 </div>
 
-                <div className='mb-2 mt-4 flex flex-col sm:flex-row w-full items-center'>
-                  <span className='mr-0 sm:mr-4 w-full sm:w-1/4 sm:shrink-0 text-gray-400'>NetworkId</span>
+                <div className='mb-2 mt-4 flex w-full flex-col items-center sm:flex-row'>
+                  <span className='mr-0 w-full text-gray-400 sm:mr-4 sm:w-1/4 sm:shrink-0'>NetworkId</span>
                   {/* <span className='mr-4 w-14'>{currentNetworkId}</span> */}
                   {/* <Button */}
                   {/*   className='w-36' */}
