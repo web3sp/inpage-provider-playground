@@ -12,6 +12,8 @@ import Select from './components/Select'
 import { methods } from './methods'
 import { StandaloneCall } from './methods/standaloneCall'
 import { testContract } from './methods/test-venom-contract'
+import {Simulate} from "react-dom/test-utils";
+import change = Simulate.change;
 
 const initTheme = 'light' as const
 
@@ -20,9 +22,9 @@ const getNetworkData = (checkNetworkId: number) => {
 }
 
 const standaloneFallback = (checkNetworkId: number = 1000) =>
-  EverscaleStandaloneClient.create({
-    connection: getNetworkData(checkNetworkId)?.connection as ConnectionProperties,
-  })
+    EverscaleStandaloneClient.create({
+      connection: getNetworkData(checkNetworkId)?.connection as ConnectionProperties,
+    })
 
 const NETWORKS = [
   {
@@ -49,6 +51,26 @@ const NETWORKS = [
       },
     },
   },
+  // {
+  //   name: "Ever network",
+  //   checkNetworkId: 8844,
+  //   // networkId:14,
+  //   // description: {
+  //   //     globalId: 1,
+  //   //     capabilities: "",
+  //   //     signatureId: undefined
+  //   // },
+  //   connection: {
+  //     id:1300,
+  //     type: 'jrpc',
+  //     data: {
+  //       endpoint: 'https://jrpc.venom.rs',
+  //     }},
+  //   // config: {
+  //   //   explorerBaseUrl: 'https://everscan.io',
+  //   //   tokensManifestUrl: "TOKENS_MANIFEST_URL",
+  //   // }
+  // },
   {
     name: 'Venom Testnet 1337',
     checkNetworkId: 1337,
@@ -59,6 +81,7 @@ const NETWORKS = [
       data: {
         endpoint: 'https://jrpc-broxustestnet.everwallet.net/rpc',
       },
+      config: {}
     },
   },
 ]
@@ -204,10 +227,10 @@ const App = () => {
   const [filter, setFilter] = useState<string>('')
 
   const [currentNetworkId, setCurrentNetworkId] = useState<number>(
-    localStorage.getItem('selectedNetwork')
-      ? Number(localStorage.getItem('selectedNetwork'))
-      : NETWORKS[0].connection.id,
-    // Number.parseInt(window.location.pathname.split('/')[1]) || 1,
+      localStorage.getItem('selectedNetwork')
+          ? Number(localStorage.getItem('selectedNetwork'))
+          : NETWORKS[0].connection.id,
+      // Number.parseInt(window.location.pathname.split('/')[1]) || 1,
   )
   useEffect(() => {
     if (currentNetworkId) localStorage.setItem('selectedNetwork', currentNetworkId.toString())
@@ -223,9 +246,9 @@ const App = () => {
     const currentThemeIndex = themesList.findIndex((item) => item === currentTheme)
 
     const theme =
-      currentThemeIndex >= lastIndex || !~currentThemeIndex || !~lastIndex
-        ? themesList[0]
-        : themesList[currentThemeIndex + 1]
+        currentThemeIndex >= lastIndex || !~currentThemeIndex || !~lastIndex
+            ? themesList[0]
+            : themesList[currentThemeIndex + 1]
 
     await venomConnect?.updateTheme(theme)
 
@@ -257,25 +280,77 @@ const App = () => {
       return undefined
     }
   }
+  const subscribeOnContract = async (address: string, _provider: ProviderRpcClient) => {
+    if (!address || !_provider) {
+      console.error('subscribeOnContract: no addr or provider')
+      return
+    }
+
+    // const subscriber = new _provider.Subscriber()
+    // @ts-ignore
+    const networkChangeSubscription = await _provider.subscribe('networkChanged', { address: new Address(addr) })
+  }
 
   const checkAuth = async (_venomConnect: any) => {
     const auth = await _venomConnect?.checkAuth()
-    if (auth) await getAddress(_venomConnect)
+    if (auth) {
+      await getAddress(_venomConnect)
+    }
   }
 
   const onInitButtonClick = async () => {
+
     const initedVenomConnect = await initVenomConnect(currentNetworkId as number)
     setVenomConnect(initedVenomConnect)
 
     await checkAuth(initedVenomConnect)
+
+
   }
 
   useEffect(() => {
     onInitButtonClick()
   }, [currentNetworkId])
 
+  const  onChangeNetwork = async () => {
+    console.log("isNetworkAdded",venomConnect,venomProvider)
+    if(venomConnect && venomProvider ) {
+      console.log("isNetworkAdded","check")
+      // await venomProvider.ensureInitialized()
+      console.log("current network id",currentNetworkId)
+      const response = await venomProvider.changeNetwork({networkId:currentNetworkId})
+      console.log("response",response)
+
+      if(response.network === null) {
+        await venomProvider.ensureInitialized()
+        const newNetwork =  NETWORKS.find((item)=>item.checkNetworkId === currentNetworkId)
+        if(newNetwork) {
+          await venomProvider.ensureInitialized()
+          venomProvider.addNetwork({
+            switchNetwork: true,
+            network: {
+              networkId: currentNetworkId,
+              name: "Venom Testnet 1337",
+
+              connection: {
+                type: newNetwork.connection.type, data: {
+                  endpoint: newNetwork.connection.data.endpoint
+                }
+              },
+              config:{
+
+              },
+            },
+          })
+        }
+      }
+      //
+    }
+  }
   const onConnectButtonClick = async () => {
     venomConnect?.connect()
+    // await onChangeNetwork()
+
   }
 
   const onDisconnectButtonClick = async () => {
@@ -288,8 +363,10 @@ const App = () => {
     const _publicKey = _provider ? await getPublicKey(_provider) : undefined
 
     setAddress(_address)
+
     setBalance(_balance)
     setPublicKey(_publicKey)
+    // await subscribeOnContract(_address,_provider)
 
     if (_provider && _address)
       setTimeout(() => {
@@ -300,7 +377,10 @@ const App = () => {
   const onConnect = async (provider: any) => {
     setVenomProvider(provider)
 
-    check(provider)
+    await check(provider)
+    console.log("venomConnect.checkNetworkId::",venomConnect.checkNetworkId)
+    console.log("currentNetworkId",currentNetworkId)
+    await onChangeNetwork()
   }
 
   useEffect(() => {
@@ -311,23 +391,28 @@ const App = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [venomConnect])
+  // useEffect(() => {
+  //   console.log("venomConnect.checkNetworkId::",venomConnect.checkNetworkId)
+  //   console.log("currentNetworkId",currentNetworkId)
+  //   if(venomProvider?.checkNetworkId && (venomConnect?.checkNetworkId !== currentNetworkId)) setCurrentNetworkId(venomConnect?.checkNetworkId)
+  // }, [venomConnect?.checkNetworkId]);
 
   const onStandaloneCall = async () => {
     const standalone: ProviderRpcClient | undefined = await venomConnect?.getStandalone('venomwallet')
 
     if (standalone) {
       const contract = new standalone.Contract(
-        testContract.testContractAbi,
-        testContract.getTestContractAddress(currentNetworkId),
+          testContract.testContractAbi,
+          testContract.getTestContractAddress(currentNetworkId),
       )
       setStandaloneMethodsIsFetching(true)
       const outputs = await contract.methods
-        .getMuldivmod({
-          a: 4,
-          b: 5,
-          c: (Date.now() % 3 ^ 0) + 1,
-        } as never)
-        .call()
+          .getMuldivmod({
+            a: 4,
+            b: 5,
+            c: (Date.now() % 3 ^ 0) + 1,
+          } as never)
+          .call()
 
       setInfo(JSON.stringify(outputs, null, 2))
     } else {
@@ -338,142 +423,142 @@ const App = () => {
   }
 
   return (
-    <div className='bg-image relative flex min-h-screen w-full flex-col bg-black text-white'>
-      <Header />
-      <h1 className='mx-auto  text-center text-3xl font-bold lg:text-5xl'>Inpage Provider Playground</h1>
-      {/* <h1 className='mx-auto  mt-2 text-center text-xl text-gray-500 lg:text-2xl'></h1> */}
-      <div className='mx-auto max-w-5xl px-5 lg:px-0'>
-        <div>
-          {/* {!venomConnect && ( */}
-          {/*   <div> */}
-          {/*     <Button onClick={onInitButtonClick}>Init lib</Button> */}
-          {/*   </div> */}
-          {/* )} */}
-          {venomConnect && (
-            <div>
-              <div className='my-6 flex w-full flex-col items-center justify-center'>
+      <div className='bg-image relative flex min-h-screen w-full flex-col bg-black text-white'>
+        <Header />
+        <h1 className='mx-auto  text-center text-3xl font-bold lg:text-5xl'>Inpage Provider Playground</h1>
+        {/* <h1 className='mx-auto  mt-2 text-center text-xl text-gray-500 lg:text-2xl'></h1> */}
+        <div className='mx-auto max-w-5xl px-5 lg:px-0'>
+          <div>
+            {/* {!venomConnect && ( */}
+            {/*   <div> */}
+            {/*     <Button onClick={onInitButtonClick}>Init lib</Button> */}
+            {/*   </div> */}
+            {/* )} */}
+            {venomConnect && (
                 <div>
-                  {venomConnect && !address && (
-                    <Button onClick={onConnectButtonClick} icon={false}>
-                      Connect via pop up
-                      <br />
-                      (requestPermissions method)
-                    </Button>
-                  )}
-                  {venomConnect && !!address && (
-                    <Button onClick={onDisconnectButtonClick} icon={false}>
-                      Disconnect
-                      <br />
-                      (Disconnect method)
-                    </Button>
-                  )}
-                </div>
-              </div>
-
-              <div className='mt-16 text-sm lg:text-base'>
-                <div className='flex w-full items-center'>
-                  <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Venom Connect theme</span>
-                  <span className='mr-4 w-14'>{theme}</span>
-                  <Button onClick={onToggleThemeButtonClick} icon={false} className='w-36'>
-                    Toggle theme
-                  </Button>
-                </div>
-
-                <div className='mb-2 mt-4 flex w-full flex-col items-center sm:flex-row'>
-                  <span className='mr-0 w-full text-gray-400 sm:mr-4 sm:w-1/4 sm:shrink-0'>NetworkId</span>
-                  {/* <span className='mr-4 w-14'>{currentNetworkId}</span> */}
-                  {/* <Button */}
-                  {/*   className='w-36' */}
-                  {/*   onClick={() => { */}
-                  {/*     setCurrentNetworkId(currentNetworkId === 1000 ? 1337 : 1000) */}
-                  {/*   }} */}
-                  {/*   icon={false} */}
-                  {/* > */}
-                  {/*   Toggle Network */}
-                  {/* </Button> */}
-                  <Select
-                    className='w-full sm:w-96'
-                    onChange={(e: any) => {
-                      setCurrentNetworkId(e)
-                    }}
-                    networks={NETWORKS}
-                    currentNetworkId={currentNetworkId}
-                  />
-                </div>
-                {/* <div className='flex w-full items-center'> */}
-                {/*   <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Network</span> */}
-                {/*   {getNetworkData(currentNetworkId)?.name as string} */}
-                {/* </div> */}
-                <div className='flex w-full items-center break-all'>
-                  <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Address</span>
-                  {address}
-                </div>
-                <div className='flex w-full items-center'>
-                  <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Balance</span>
-                  {balance ? (balance / 10 ** 9).toFixed(10) : undefined}
-                </div>
-
-                <div className='mt-4 flex w-full '>
-                  <span className='mr-4 w-1/4 shrink-0 text-gray-400'>User agent</span>
-                  <span className='break-all'>{window.navigator.userAgent}</span>
-                </div>
-              </div>
-
-              {venomConnect && !!address && (
-                <div className='mt-16'>
-                  <div className='group relative mt-1 rounded-md shadow-sm'>
-                    <input
-                      type='text'
-                      className='m-0 block h-10 w-full cursor-text overflow-visible overflow-ellipsis rounded-lg border border-solid border-gray-700 bg-transparent py-0 pl-3 pr-10 text-sm font-normal leading-5 tracking-wide text-white hover:shadow-[0_0_5px_1px_#9297e2] focus:shadow-[0_0_5px_1px_#9297e2] focus:outline-none'
-                      // box-shadow: 0 0 5px 1px var(--input-border-ring);
-                      placeholder='Filter methods by name'
-                      value={filter}
-                      onChange={(e) => {
-                        setFilter(e.target.value)
-                      }}
-                      // style='box-shadow: none; outline: none; transition: all 0.25s ease 0s;'
-                    />
-                    <div className='absolute inset-y-0 right-0 z-10 flex items-center pr-3'>
-                      <XMarkIcon
-                        className='h-5 w-5 text-gray-800 hover:cursor-pointer group-focus-within:text-[#9297e2] group-hover:text-[#9297e2]'
-                        aria-hidden='true'
-                        onClick={() => setFilter('')}
-                      />
+                  <div className='my-6 flex w-full flex-col items-center justify-center'>
+                    <div>
+                      {venomConnect && !address && (
+                          <Button onClick={onConnectButtonClick} icon={false}>
+                            Connect via pop up
+                            <br />
+                            (requestPermissions method)
+                          </Button>
+                      )}
+                      {venomConnect && !!address && (
+                          <Button onClick={onDisconnectButtonClick} icon={false}>
+                            Disconnect
+                            <br />
+                            (Disconnect method)
+                          </Button>
+                      )}
                     </div>
                   </div>
 
-                  <div className='my-10 overflow-hidden bg-white bg-opacity-5 shadow sm:rounded-md'>
-                    <ul role='list' className='divide-y divide-gray-200 divide-opacity-10'>
-                      {currentNetworkId && (!filter || 'standalone call'.includes(filter.toLowerCase())) && (
-                        <li key={'call'} className=''>
-                          <StandaloneCall venomConnect={venomConnect} currentNetworkId={currentNetworkId} />
-                        </li>
-                      )}
-                      {methods?.map((element, i) => {
-                        const Element = element.method
-                        if (!filter || element.name.toLowerCase().includes(filter.toLowerCase())) {
-                          return (
-                            <li key={i} className=''>
-                              <Element
-                                provider={venomProvider}
-                                networkId={currentNetworkId}
-                                address={address}
-                                publicKey={publicKey}
-                              />
-                            </li>
-                          )
-                        } else return null
-                      })}
-                    </ul>
+                  <div className='mt-16 text-sm lg:text-base'>
+                    <div className='flex w-full items-center'>
+                      <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Venom Connect theme</span>
+                      <span className='mr-4 w-14'>{theme}</span>
+                      <Button onClick={onToggleThemeButtonClick} icon={false} className='w-36'>
+                        Toggle theme
+                      </Button>
+                    </div>
+
+                    <div className='mb-2 mt-4 flex w-full flex-col items-center sm:flex-row'>
+                      <span className='mr-0 w-full text-gray-400 sm:mr-4 sm:w-1/4 sm:shrink-0'>NetworkId</span>
+                      {/* <span className='mr-4 w-14'>{currentNetworkId}</span> */}
+                      {/* <Button */}
+                      {/*   className='w-36' */}
+                      {/*   onClick={() => { */}
+                      {/*     setCurrentNetworkId(currentNetworkId === 1000 ? 1337 : 1000) */}
+                      {/*   }} */}
+                      {/*   icon={false} */}
+                      {/* > */}
+                      {/*   Toggle Network */}
+                      {/* </Button> */}
+                      <Select
+                          className='w-full sm:w-96'
+                          onChange={(e: any) => {
+                            setCurrentNetworkId(e)
+                          }}
+                          networks={NETWORKS}
+                          currentNetworkId={currentNetworkId}
+                      />
+                    </div>
+                    {/* <div className='flex w-full items-center'> */}
+                    {/*   <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Network</span> */}
+                    {/*   {getNetworkData(currentNetworkId)?.name as string} */}
+                    {/* </div> */}
+                    <div className='flex w-full items-center break-all'>
+                      <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Address</span>
+                      {address}
+                    </div>
+                    <div className='flex w-full items-center'>
+                      <span className='mr-4 w-1/4 shrink-0 text-gray-400'>Balance</span>
+                      {balance ? (balance / 10 ** 9).toFixed(10) : undefined}
+                    </div>
+
+                    <div className='mt-4 flex w-full '>
+                      <span className='mr-4 w-1/4 shrink-0 text-gray-400'>User agent</span>
+                      <span className='break-all'>{window.navigator.userAgent}</span>
+                    </div>
                   </div>
+
+                  {venomConnect && !!address && (
+                      <div className='mt-16'>
+                        <div className='group relative mt-1 rounded-md shadow-sm'>
+                          <input
+                              type='text'
+                              className='m-0 block h-10 w-full cursor-text overflow-visible overflow-ellipsis rounded-lg border border-solid border-gray-700 bg-transparent py-0 pl-3 pr-10 text-sm font-normal leading-5 tracking-wide text-white hover:shadow-[0_0_5px_1px_#9297e2] focus:shadow-[0_0_5px_1px_#9297e2] focus:outline-none'
+                              // box-shadow: 0 0 5px 1px var(--input-border-ring);
+                              placeholder='Filter methods by name'
+                              value={filter}
+                              onChange={(e) => {
+                                setFilter(e.target.value)
+                              }}
+                              // style='box-shadow: none; outline: none; transition: all 0.25s ease 0s;'
+                          />
+                          <div className='absolute inset-y-0 right-0 z-10 flex items-center pr-3'>
+                            <XMarkIcon
+                                className='h-5 w-5 text-gray-800 hover:cursor-pointer group-focus-within:text-[#9297e2] group-hover:text-[#9297e2]'
+                                aria-hidden='true'
+                                onClick={() => setFilter('')}
+                            />
+                          </div>
+                        </div>
+
+                        <div className='my-10 overflow-hidden bg-white bg-opacity-5 shadow sm:rounded-md'>
+                          <ul role='list' className='divide-y divide-gray-200 divide-opacity-10'>
+                            {currentNetworkId && (!filter || 'standalone call'.includes(filter.toLowerCase())) && (
+                                <li key={'call'} className=''>
+                                  <StandaloneCall venomConnect={venomConnect} currentNetworkId={currentNetworkId} />
+                                </li>
+                            )}
+                            {methods?.map((element, i) => {
+                              const Element = element.method
+                              if (!filter || element.name.toLowerCase().includes(filter.toLowerCase())) {
+                                return (
+                                    <li key={i} className=''>
+                                      <Element
+                                          provider={venomProvider}
+                                          networkId={currentNetworkId}
+                                          address={address}
+                                          publicKey={publicKey}
+                                      />
+                                    </li>
+                                )
+                              } else return null
+                            })}
+                          </ul>
+                        </div>
+                      </div>
+                  )}
                 </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
   )
 }
 

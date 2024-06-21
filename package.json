@@ -14,7 +14,7 @@
     "@types/react-dom": "^18.0.11",
     "ace-builds": "^1.15.2",
     "classnames": "^2.3.2",
-    "everscale-inpage-provider": "^0.3.61",
+    "everscale-inpage-provider": "^0.3.65",
     "everscale-standalone-client": "^2.1.20 ",
     "js-base64": "^3.7.5",
     "prettier-plugin-organize-imports": "^3.2.2",
