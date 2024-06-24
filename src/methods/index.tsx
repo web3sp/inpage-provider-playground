@@ -23,16 +23,18 @@ import { SignData } from './signData'
 import { SignDataRaw } from './signDataRaw'
 import { Subscribe } from './subscribe'
 import { Tvc } from './tvc'
+import {ChangeNetwork} from "./changeNetwork";
+import {AddNetwork} from "./addNetwork";
 
 type MethodObject = {
   name: string
 
   method: ({
-    provider,
-    networkId,
-    address,
-    publicKey,
-  }: {
+             provider,
+             networkId,
+             address,
+             publicKey,
+           }: {
     provider: ProviderRpcClient
     networkId?: number | string
     address?: string
@@ -42,6 +44,8 @@ type MethodObject = {
 
 export const methods: MethodObject[] = [
   { name: 'changeAccount', method: ChangeAccount },
+  {name: "changeNetwork", method: ChangeNetwork },
+  {name: "addNetwork", method: AddNetwork },
   { name: 'getProviderState', method: GetProviderState },
   { name: 'getFullContractState', method: GetFullContractState },
   { name: 'getTransaction', method: GetTransaction },
