@@ -1,5 +1,5 @@
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { ProviderRpcClient } from 'everscale-inpage-provider'
+import {Address, ProviderRpcClient} from 'everscale-inpage-provider'
 import { ConnectionProperties, EverscaleStandaloneClient } from 'everscale-standalone-client'
 import { useEffect, useState } from 'react'
 
@@ -285,16 +285,39 @@ const App = () => {
       console.error('subscribeOnContract: no addr or provider')
       return
     }
+    const _address  = new Address((address))
 
-    // const subscriber = new _provider.Subscriber()
+    const subscriber = new _provider.Subscriber()
     // @ts-ignore
-    const networkChangeSubscription = await _provider.subscribe('networkChanged', { address: new Address(addr) })
+    const networkChangeSubscription = await _provider.subscribe('networkChanged', { address: _address })
+    networkChangeSubscription.on('data', async () => {
+      await getBalance(_provider, address)
+    })
+    const statesStream = subscriber.states(_address)
+
+    return new Promise((resolve) => {
+      statesStream.makeProducer(
+          async (evt: any) => {
+            const bal = evt?.state?.balance || undefined
+            setBalance(bal)
+
+            return false
+          },
+          () => {
+            resolve(balance)
+            subscriber.unsubscribe()
+          },
+      )
+    })
+
+
   }
 
   const checkAuth = async (_venomConnect: any) => {
     const auth = await _venomConnect?.checkAuth()
     if (auth) {
-      await getAddress(_venomConnect)
+     const _address=  await getAddress(_venomConnect)
+      // await subscribeOnContract(_address,venomProvider)
     }
   }
 
@@ -312,20 +335,15 @@ const App = () => {
     onInitButtonClick()
   }, [currentNetworkId])
 
-  const  onChangeNetwork = async () => {
-    console.log("isNetworkAdded",venomConnect,venomProvider)
-    if(venomConnect && venomProvider ) {
-      console.log("isNetworkAdded","check")
+  const  onChangeNetwork = async (provider?:ProviderRpcClient) => {
+    if(venomConnect && provider ) {
       // await venomProvider.ensureInitialized()
-      console.log("current network id",currentNetworkId)
-      const response = await venomProvider.changeNetwork({networkId:currentNetworkId})
-      console.log("response",response)
-
+      const response = await provider.changeNetwork({networkId:currentNetworkId})
       if(response.network === null) {
-        await venomProvider.ensureInitialized()
+        await provider.ensureInitialized()
         const newNetwork =  NETWORKS.find((item)=>item.checkNetworkId === currentNetworkId)
         if(newNetwork) {
-          await venomProvider.ensureInitialized()
+          await provider.ensureInitialized()
           venomProvider.addNetwork({
             switchNetwork: true,
             network: {
@@ -349,7 +367,6 @@ const App = () => {
   }
   const onConnectButtonClick = async () => {
     venomConnect?.connect()
-    // await onChangeNetwork()
 
   }
 
@@ -366,7 +383,7 @@ const App = () => {
 
     setBalance(_balance)
     setPublicKey(_publicKey)
-    // await subscribeOnContract(_address,_provider)
+
 
     if (_provider && _address)
       setTimeout(() => {
@@ -378,9 +395,10 @@ const App = () => {
     setVenomProvider(provider)
 
     await check(provider)
-    console.log("venomConnect.checkNetworkId::",venomConnect.checkNetworkId)
-    console.log("currentNetworkId",currentNetworkId)
-    await onChangeNetwork()
+    await onChangeNetwork(provider)
+    setTimeout(() => {
+      check(provider)
+    }, 1000)
   }
 
   useEffect(() => {
